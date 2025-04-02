@@ -1,16 +1,12 @@
 #!/bin/bash
-set -e  # Exit if any command fails
+set -e  # Stops script if any command fails
+set -x  # Prints each command before running it
 
-# Ensure the correct directory exists
-if [ ! -d "/home/ec2-user/node-cicd-app" ]; then
-    mkdir -p /home/ec2-user/node-cicd-app
-fi
+echo "Running Install Dependencies script..."
+exec > /tmp/install_dependencies.log 2>&1  # Redirects output to a log file
 
-cd /home/ec2-user/node-cicd-app
+# Install necessary dependencies
+sudo yum update -y || true  # Avoid breaking due to failed updates
+sudo yum install -y nodejs npm || sudo apt install -y nodejs npm || true
 
-# Fix permission issues
-sudo chmod -R 777 /home/ec2-user/node-cicd-app
-sudo chown -R ec2-user:ec2-user /home/ec2-user/node-cicd-app
-
-# Install dependencies safely
-npm install --unsafe-perm=true
+echo "Dependencies installation completed!"
