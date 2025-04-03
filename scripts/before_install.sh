@@ -1,10 +1,16 @@
 #!/bin/bash
 echo "🔄 Checking if the application is already running..."
 
-# Check if PM2 is installed
-if ! command -v pm2 &> /dev/null; then
-    echo "❌ PM2 is not installed. Please install it before running this script."
-    exit 1
+# Move to the application directory
+cd /home/ec2-user/node-cicd-app || { echo "❌ Failed to enter application directory"; exit 1; }
+
+# Check if the application is already running
+if pm2 list | grep -q "node-app"; then
+    echo "⚠️ Application is already running. Stopping it before proceeding..."
+    pm2 stop node-app
+    pm2 delete node-app
+else
+    echo "✅ No running application found. Proceeding with deployment..."
 fi
 
-echo "✅ PM2 is installed."
+echo "✅ Before install script completed!"
