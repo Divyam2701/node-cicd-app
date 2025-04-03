@@ -1,12 +1,13 @@
 #!/bin/bash
-set -e  # Stops script if any command fails
-set -x  # Prints each command before running it
+echo "📦 Checking and Installing Dependencies..."
 
-echo "Running Install Dependencies script..."
-exec > /tmp/install_dependencies.log 2>&1  # Redirects output to a log file
+cd /home/ec2-user/node-cicd-app
 
-# Install necessary dependencies
-sudo yum update -y || true  # Avoid breaking due to failed updates
-sudo yum install -y nodejs npm || sudo apt install -y nodejs npm || true
-
-echo "Dependencies installation completed!"
+# Check if node_modules exists
+if [ -d "node_modules" ]; then
+    echo "✅ Dependencies already installed. Skipping installation."
+else
+    echo "⚠️ Dependencies not found. Installing now..."
+    npm install --only=prod  # Install only production dependencies
+    echo "✅ Dependencies installed."
+fi
