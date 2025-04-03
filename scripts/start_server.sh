@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /home/ubuntu/node-cicd-app  # Update with the correct path of your app
+cd /home/ec2-user/node-cicd-app  # Update with the correct path of your app
 
 # Stop the existing PM2 process (if running)
 if pm2 list | grep -q "node-cicd-app"; then
