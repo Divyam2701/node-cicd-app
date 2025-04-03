@@ -1,8 +1,15 @@
 #!/bin/bash
+
 echo "📦 Checking and installing application dependencies..."
 
 # Move to the application directory
-cd /home/ec2-user/node-cicd-app
+cd /home/ec2-user/node-cicd-app || { echo "❌ Failed to enter application directory"; exit 1; }
+
+# Ensure NPM is available
+if ! command -v npm &> /dev/null; then
+    echo "❌ NPM is not installed. Please install Node.js and try again."
+    exit 1
+fi
 
 # Install PM2 globally if not installed
 if ! command -v pm2 &> /dev/null; then
@@ -12,7 +19,7 @@ else
     echo "✅ PM2 is already installed."
 fi
 
-# Check if node_modules exists
+# Check if node_modules exists, otherwise install dependencies
 if [ -d "node_modules" ]; then
     echo "✅ Dependencies are already installed."
 else

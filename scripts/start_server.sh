@@ -1,19 +1,18 @@
 #!/bin/bash
-echo "🚀 Starting application with PM2..."
 
-cd /home/ec2-user/node-cicd-app
+cd /home/ubuntu/node-cicd-app  # Update with the correct path of your app
 
-# Check if PM2 process is already running
-if pm2 list | grep -q "node-app"; then
-    echo "🔄 Restarting application to reflect changes..."
-    pm2 restart node-app
-else
-    echo "🚀 Starting application for the first time..."
-    pm2 start app.js --name "node-app"
+# Stop the existing PM2 process (if running)
+if pm2 list | grep -q "node-cicd-app"; then
+    echo "Stopping existing PM2 process..."
+    pm2 stop node-cicd-app
+    pm2 delete node-cicd-app
 fi
 
-# Save PM2 process list so it restarts after reboot
-pm2 save
-pm2 startup systemd
+# Start the app with PM2
+echo "Starting application with PM2..."
+pm2 start index.js --name "node-cicd-app"  # Update with the correct entry file
 
-echo "✅ Application started successfully!"
+# Ensure PM2 restarts the app on reboot
+pm2 save
+pm2 startup
