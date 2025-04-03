@@ -2,26 +2,21 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ec2-user/node-cicd-app
-
+    destination: /home/ec2-user/app  # Change this path as per your setup
 permissions:
-  - object: /home/ec2-user/node-cicd-app
+  - object: /home/ec2-user/app
     owner: ec2-user
     group: ec2-user
-    mode: 755
-  - object: scripts/start_server.sh
-    mode: 755
-
 hooks:
-  BeforeInstall:
-    - location: scripts/before_install.sh
-      timeout: 300
+  ApplicationStop:
+    - location: scripts/stop_app.sh
+      timeout: 30
       runas: ec2-user
-  AfterInstall:
+  BeforeInstall:
     - location: scripts/install_dependencies.sh
-      timeout: 300
+      timeout: 30
       runas: ec2-user
   ApplicationStart:
-    - location: scripts/start_server.sh
-      timeout: 300
+    - location: scripts/start_app.sh
+      timeout: 30
       runas: ec2-user
