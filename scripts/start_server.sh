@@ -1,20 +1,19 @@
 #!/bin/bash
 echo "🚀 Starting application with PM2..."
 
-# Ensure correct user
-sudo su - ec2-user
+# Move to the application directory
+cd /home/ec2-user/node-cicd-app || { echo "❌ Failed to enter application directory"; exit 1; }
 
-# Set correct PATH (for nvm users)
-export NVM_DIR="/home/ec2-user/.nvm"
-export PATH="/home/ec2-user/.nvm/versions/node/$(node -v)/bin:$PATH"
+# Start or restart the application
+if pm2 list | grep -q "app.js"; then
+    echo "🔄 Restarting application..."
+    pm2 restart app.js
+else
+    echo "▶️ Starting application..."
+    pm2 start app.js --name node-app
+fi
 
-# Navigate to app directory
-cd /home/ec2-user/node-cicd-app || { echo "❌ Directory not found"; exit 1; }
-
-# Start or restart the application with PM2
-pm2 stop node-cicd-app || true
-pm2 start app.js --name node-cicd-app
+# Save the PM2 process list to ensure auto-restart on reboot
 pm2 save
-pm2 startup
 
-echo "✅ Application started successfully!"
+echo "✅ Application is running!"
