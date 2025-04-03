@@ -1,3 +1,9 @@
 #!/bin/bash
 cd /home/ec2-user/node-cicd-app
-~/.npm-global/bin/pm2 start app.js --name "node-app"
+if ~/.npm-global/bin/pm2 list | grep -q "node-app"; then
+  echo "Application is already running, skipping start."
+else
+  echo "Starting application..."
+  ~/.npm-global/bin/pm2 start app.js.js --name "node-app"
+fi
+~/.npm-global/bin/pm2 save

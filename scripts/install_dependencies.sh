@@ -1,3 +1,2 @@
 #!/bin/bash
-cd /home/ec2-user/node-cicd-app
-npm install
+echo "Skipping dependency installation since node_modules is included in the artifact."
