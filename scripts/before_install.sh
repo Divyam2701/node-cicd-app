@@ -1,41 +1,23 @@
 #!/bin/bash
-echo "🔧 Running BeforeInstall script..."
+echo "🚀 Running BeforeInstall script..."
 
-# Ensure script runs as ec2-user
-sudo chown -R ec2-user:ec2-user /home/ec2-user/
+cd /home/ec2-user/node-cicd-app
 
-# Install system dependencies
-echo "📦 Installing required system dependencies..."
-sudo apt update -y
-sudo apt install -y curl unzip awscli nodejs npm
-
-# Install PM2 if not already installed
+# Ensure PM2 is installed
 if ! command -v pm2 &> /dev/null; then
-    echo "⚙️ Installing PM2..."
+    echo "⚙️ PM2 not found. Installing..."
     sudo npm install -g pm2
 else
     echo "✅ PM2 is already installed."
 fi
 
-# Prevent duplicate deployments
-LOCK_FILE="/tmp/deployment-in-progress.lock"
-if [ -f "$LOCK_FILE" ]; then
-    echo "🚨 Deployment already in progress. Skipping..."
-    exit 0
-fi
-touch "$LOCK_FILE"
-
-# Check if server is running and stop it if necessary
-echo "🔴 Checking for running application..."
-if pm2 list | grep -q node-app; then
-    echo "✅ Application is running. Stopping it..."
-    pm2 stop node-app
+# Check if node_modules exists and install dependencies if missing
+if [ ! -d "node_modules" ]; then
+    echo "📦 Dependencies missing. Installing..."
+    npm install
+    echo "✅ Dependencies installed."
 else
-    echo "⚠️ Application is not running. Proceeding with deployment."
+    echo "✅ Dependencies already installed. Skipping installation."
 fi
 
-# Clean up old application files
-echo "🧹 Cleaning up old application files..."
-sudo rm -rf /home/ec2-user/node-cicd-app/*
-
-echo "✅ BeforeInstall script execution completed!"
+echo "✅ BeforeInstall script completed!"
