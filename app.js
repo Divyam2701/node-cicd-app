@@ -9,7 +9,7 @@ app.use(express.json()); // Support JSON payloads
 
 // Root Route
 app.get("/", (req, res) => {
-  res.send("Hello, World! This is a CI/CD pipeline deployment using AWS!. Added the whole code using the code pipeline and functionality");
+  res.send("Hello, World! This is a CI/CD pipeline deployment using AWS!. Added the whole code using the code pipeline & functionality");
 });
 
 // Health Check Route

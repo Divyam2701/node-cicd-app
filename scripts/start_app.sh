@@ -1,9 +1,11 @@
 #!/bin/bash
 cd /home/ec2-user/node-cicd-app
-if ~/.npm-global/bin/pm2 list | grep -q "node-app"; then
-  echo "Application is already running, skipping start."
-else
-  echo "Starting application..."
-  ~/.npm-global/bin/pm2 start app.js.js --name "node-app" --update-env
-fi
-~/.npm-global/bin/pm2 save
+
+# Ensure correct permissions
+chmod -R 755 /home/ec2-user/node-cicd-app
+
+# Stop any running PM2 processes
+~/.npm-global/bin/pm2 stop all
+
+# Start the application with PM2
+~/.npm-global/bin/pm2 start app.js
