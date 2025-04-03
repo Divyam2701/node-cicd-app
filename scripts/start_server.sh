@@ -1,18 +1,15 @@
 #!/bin/bash
+echo "🚀 Starting application with PM2..."
 
-cd /home/ec2-user/node-cicd-app  # Update with the correct path of your app
+# Ensure correct PATH for node and pm2
+export NVM_DIR="/home/ec2-user/.nvm"
+export PATH="/home/ec2-user/.nvm/versions/node/$(node -v)/bin:$PATH"
 
-# Stop the existing PM2 process (if running)
-if pm2 list | grep -q "node-cicd-app"; then
-    echo "Stopping existing PM2 process..."
-    pm2 stop node-cicd-app
-    pm2 delete node-cicd-app
-fi
+# Navigate to app directory
+cd /home/ec2-user/node-cicd-app
 
-# Start the app with PM2
-echo "Starting application with PM2..."
-pm2 start index.js --name "node-cicd-app"  # Update with the correct entry file
-
-# Ensure PM2 restarts the app on reboot
+# Restart server with PM2
+pm2 stop all || true
+pm2 start app.js --name node-cicd-app
 pm2 save
 pm2 startup
