@@ -23,7 +23,7 @@ jobs:
       - name: Check if AWS CodePipeline Exists
         id: check_pipeline
         run: |
-          PIPELINE_NAME="my-nodejs-pipeline"  # Change this to your actual pipeline name
+          PIPELINE_NAME="nodejs-cicd-pipeline-new-6"  # Change this to your actual pipeline name
           PIPELINE_STATUS=$(aws codepipeline get-pipeline-state --name "$PIPELINE_NAME" --query "stageStates[0].actionStates[0].latestExecution.status" --output text 2>/dev/null || echo "NOT_FOUND")
 
           if [[ "$PIPELINE_STATUS" == "NOT_FOUND" ]]; then
@@ -35,4 +35,4 @@ jobs:
 
       - name: Start AWS CodePipeline Execution
         run: |
-          aws codepipeline start-pipeline-execution --name my-nodejs-pipeline  # Change this to your pipeline name
+          aws codepipeline start-pipeline-execution --name nodejs-cicd-pipeline-new-6  # Change this to your pipeline name
