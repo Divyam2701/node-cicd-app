@@ -9,7 +9,7 @@ export PATH="/home/ec2-user/.nvm/versions/node/$(node -v)/bin:$PATH"
 cd /home/ec2-user/node-cicd-app
 
 # Restart server with PM2
-pm2 stop all || true
-pm2 start app.js --name node-cicd-app
-pm2 save
-pm2 startup
+sudo pm2 stop all || true
+sudo pm2 start app.js --name node-cicd-app
+sudo pm2 save
+sudo pm2 startup

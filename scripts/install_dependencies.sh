@@ -24,7 +24,7 @@ if [ -d "node_modules" ]; then
     echo "✅ Dependencies are already installed."
 else
     echo "🚀 Installing dependencies..."
-    npm install --only=prod
+    sudo npm install --only=prod
 fi
 
 echo "✅ Dependencies setup completed!"
