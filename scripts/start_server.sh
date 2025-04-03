@@ -9,7 +9,7 @@ if pm2 list | grep -q node-app; then
     pm2 restart node-app
 else
     echo "🚀 Starting application for the first time..."
-    pm2 start index.js --name node-app
+    pm2 start app.js --name node-app
 fi
 
 echo "✅ Application is now running."
